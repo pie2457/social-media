@@ -1,8 +1,10 @@
 package wanted.media.user.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import wanted.media.content.domain.Content;
 
@@ -14,7 +16,8 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name="users")
+@Getter
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -24,4 +27,20 @@ public class User {
     @OneToMany(mappedBy = "user")
     @Builder.Default
     List<Content> interviews = new ArrayList<>();
+
+    @Column(unique = true, nullable = false)
+    @Size(max = 50)
+    private String account;
+
+    @Size(max = 200)
+    @Column(nullable = false)
+    private String email;
+
+    @Size(max = 200)
+    @Column(nullable = false)
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Grade grade;
 }
