@@ -27,6 +27,7 @@ public class Content {
     @Column(name = "content_id", nullable = false)
     private Long id;
 
+    @Column(name = "like_count")
     private Long likeCount;
 
     @Enumerated(EnumType.STRING)
@@ -34,11 +35,13 @@ public class Content {
     private Type type;
 
     @Size(max = 150)
+    @Column(nullable = false)
     private String title;
 
     private String content;
 
     private String hashtags;
+
 
     private Long viewCount;
 
