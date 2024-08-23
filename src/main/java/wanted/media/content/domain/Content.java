@@ -3,10 +3,7 @@ package wanted.media.content.domain;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -17,7 +14,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Table(name = "contents")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
 @EntityListeners(AuditingEntityListener.class)
@@ -41,7 +38,6 @@ public class Content {
     private String content;
 
     private String hashtags;
-
 
     private Long viewCount;
 
