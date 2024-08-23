@@ -29,8 +29,9 @@ public class Content {
 
     private Long likeCount;
 
-    @Size(max = 50)
-    private Enum type;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Type type;
 
     @Size(max = 150)
     private String title;
