@@ -6,10 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import wanted.media.content.domain.Content;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @NoArgsConstructor
@@ -21,12 +18,8 @@ import java.util.UUID;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "userId", nullable = false)
+    @Column(name = "user_id", nullable = false)
     private UUID userId;
-
-    @OneToMany(mappedBy = "user")
-    @Builder.Default
-    List<Content> interviews = new ArrayList<>();
 
     @Column(unique = true, nullable = false)
     @Size(max = 50)
