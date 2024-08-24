@@ -1,4 +1,4 @@
-package wanted.media.content.domain;
+package wanted.media.post.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -13,15 +13,15 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Table(name = "contents")
+@Table(name = "posts")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
 @EntityListeners(AuditingEntityListener.class)
-public class Content {
+public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "content_id", nullable = false)
+    @Column(name = "post_id", nullable = false)
     private Long id;
 
     @Column(name = "like_count")
