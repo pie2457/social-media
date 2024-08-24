@@ -23,4 +23,14 @@ public class Token {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    public Token(String refreshToken, User user) {
+        this.refreshToken = refreshToken;
+        this.user = user;
+    }
+
+    public Token updateToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+        return this;
+    }
 }

@@ -19,21 +19,21 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class TokenProvider {
 
-    @Value("&{jwt.secret_key}")
+    @Value("${jwt.secret_key}")
     private String key;
 
     private long tokenValidTime = 1000L * 60 * 60; // 1시간
+    private long RefreshTokenValidTime = 1000L * 60 * 60 * 24 * 7; // 7일
 
     private final UserDetailService userDetailService;
 
-    public String makeToken(String account) {
+    public String makeToken(String account, String type) {
         Date now = new Date();
+        long time = type.equals("access") ? tokenValidTime : RefreshTokenValidTime;
 
         return Jwts.builder()
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE) // 헤더 타입
-                .setIssuedAt(now) // 발급시간
-                .setExpiration(new Date(now.getTime() + tokenValidTime)) // 만료시간
-                .setClaims(Jwts.claims().setSubject(account)) // 회원 계정 (사용자 식별값)
+                .setClaims(Jwts.claims().setSubject(account).setAudience(type).setIssuedAt(now).setExpiration(new Date(now.getTime() + time)))
                 .signWith(SignatureAlgorithm.HS256, key) // HS256 방식으로 key와 함께 암호화
                 .compact();
     }
