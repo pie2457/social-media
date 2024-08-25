@@ -28,7 +28,7 @@ public class UserService {
         Optional<Token> refreshToken = tokenRepository.findByUserId(user.getUserId()); // 리프레시 토큰 있는지 확인
         String newRefreshToken = tokenProvider.makeToken(requestDto.getAccount(), "refresh"); // 새 리프레시 토큰
         if (refreshToken.isPresent()) { // 리프레시 토큰 있을 경우
-            tokenRepository.save(refreshToken.get().updateToken(newRefreshToken)); // 새 토큰으로 업데이트
+            refreshToken.get().updateToken(newRefreshToken); // 새 토큰으로 업데이트
         } else { // 리프레시 토큰 없을 경우
             tokenRepository.save(new Token(newRefreshToken, user)); // 새 토큰 저장
         }
