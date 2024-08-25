@@ -1,6 +1,7 @@
 package wanted.media.content.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wanted.media.content.domain.Post;
@@ -19,7 +20,8 @@ public class PostService {
     private PostRepository postRepository;
 
     @Transactional(readOnly = true)
-    public List<Post> findPosts(String account, Type type) {
+    public List<Post> findPosts(String account, Type type, String orderBy, String sortDirection) {
+        Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), orderBy)
         if (account == null || account.isEmpty()) {
             return type == null ?
                     postRepository.findAll() : postRepository.findByType(type);

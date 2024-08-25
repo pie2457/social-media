@@ -24,8 +24,10 @@ public class PostController {
 
     @GetMapping
     public List<PostDto> list(@RequestParam(value = "hashtag", required = true) String account,
-                              @RequestParam(value = "type", required = false) Type type) {
-        List<Post> posts = postService.findPosts(account, type);
+                              @RequestParam(value = "type", required = false) Type type,
+                              @RequestParam(value = "orderBy", defaultValue = "createdAt") String orderBy,
+                              @RequestParam(value = "sortDirection", defaultValue = "ASC") String sortDirection) {
+        List<Post> posts = postService.findPosts(account, type, orderBy, sortDirection);
         log.info("Content List : " + posts);
         return posts.stream()
                 .map(PostDto::allPosts)
