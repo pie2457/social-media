@@ -25,6 +25,7 @@ public class TokenProvider {
     private long tokenValidTime;
     @Value("${jwt.refresh_token_expiration}")
     private long RefreshTokenValidTime;
+    private final String BEARER_PREFIX = "Bearer ";
 
     private final UserDetailService userDetailService;
 
@@ -75,8 +76,8 @@ public class TokenProvider {
     // 토큰 Header에서 꺼내오기
     public String resolveToken(HttpServletRequest request) {
         String header = request.getHeader("Authorization");
-        if (header != null && header.startsWith("Bearer "))
-            return header.substring(7);
+        if (header != null && header.startsWith(BEARER_PREFIX))
+            return header.substring(BEARER_PREFIX.length());
         return null;
     }
 }
