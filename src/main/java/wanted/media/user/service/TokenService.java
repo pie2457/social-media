@@ -22,7 +22,7 @@ public class TokenService {
 
     // 액세스 토큰, 리프레시 토큰 재발행
     public TokenResponseDto getToken(TokenRequestDto requestDto) {
-        if (!tokenProvider.validToken(requestDto.getRefreshToken())) { // 리프레시 토큰 만료 기간 지났을 경우
+        if (!tokenProvider.validToken(requestDto.refreshToken())) { // 리프레시 토큰 만료 기간 지났을 경우
             throw new IllegalArgumentException("다시 로그인해주세요.");
         }
 
@@ -31,7 +31,7 @@ public class TokenService {
         Token storedToken = tokenRepository.findByUserId(user.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 토큰입니다."));
 
-        if (!storedToken.getRefreshToken().equals(requestDto.getRefreshToken())) {
+        if (!storedToken.getRefreshToken().equals(requestDto.refreshToken())) {
             throw new IllegalArgumentException("유효하지 않은 토큰입니다.");
         }
 
@@ -45,7 +45,7 @@ public class TokenService {
     }
 
     public User findUserByToken(TokenRequestDto requestDto) {
-        Authentication authentication = tokenProvider.getAuthentication(requestDto.getAccessToken());
+        Authentication authentication = tokenProvider.getAuthentication(requestDto.accessToken());
         UserDetail userDetail = (UserDetail) authentication.getPrincipal();
         String account = userDetail.getUsername();
         return userRepository.findByAccount(account)
