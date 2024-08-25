@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import wanted.media.exception.NotFoundException;
 import wanted.media.user.domain.User;
 import wanted.media.user.domain.UserDetail;
 import wanted.media.user.repository.UserRepository;
@@ -23,7 +24,7 @@ public class UserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String account) throws UsernameNotFoundException {
         User user = userRepository.findByAccount(account)
-                .orElseThrow(() -> new IllegalArgumentException("계정이 존재하지 않습니다."));
+                .orElseThrow(() -> new NotFoundException("계정이 존재하지 않습니다."));
         List<GrantedAuthority> roles = new ArrayList<>();
         roles.add(new SimpleGrantedAuthority(user.getGrade().toString()));
 

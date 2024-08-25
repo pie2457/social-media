@@ -33,7 +33,12 @@ public class TokenProvider {
 
         return Jwts.builder()
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE) // 헤더 타입
-                .setClaims(Jwts.claims().setSubject(account).setAudience(type).setIssuedAt(now).setExpiration(new Date(now.getTime() + time)))
+                .setClaims(Jwts.claims().
+                        setSubject(account).
+                        setAudience(type).
+                        setIssuedAt(now).
+                        setExpiration(new Date(now.getTime() + time))
+                )
                 .signWith(SignatureAlgorithm.HS256, key) // HS256 방식으로 key와 함께 암호화
                 .compact();
     }

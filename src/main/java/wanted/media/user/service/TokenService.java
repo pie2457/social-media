@@ -3,6 +3,7 @@ package wanted.media.user.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import wanted.media.exception.NotFoundException;
 import wanted.media.user.config.TokenProvider;
 import wanted.media.user.domain.Token;
 import wanted.media.user.domain.User;
@@ -48,7 +49,8 @@ public class TokenService {
         Authentication authentication = tokenProvider.getAuthentication(requestDto.getAccessToken());
         UserDetail userDetail = (UserDetail) authentication.getPrincipal();
         String account = userDetail.getUsername();
-        return userRepository.findByAccount(account).orElseThrow(() -> new IllegalArgumentException("회원을 찾을 수 없습니다."));
+        return userRepository.findByAccount(account)
+                .orElseThrow(() -> new NotFoundException("회원을 찾을 수 없습니다."));
     }
 
 }
