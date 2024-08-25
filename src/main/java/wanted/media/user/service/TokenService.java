@@ -20,8 +20,8 @@ public class TokenService {
     private final TokenRepository tokenRepository;
     private final UserRepository userRepository;
 
-    // 액세스 토큰 재발행
-    public TokenResponseDto reIssueToken(TokenRequestDto requestDto) {
+    // 액세스 토큰, 리프레시 토큰 재발행
+    public TokenResponseDto getToken(TokenRequestDto requestDto) {
         if (!tokenProvider.validToken(requestDto.getRefreshToken())) { // 리프레시 토큰 만료 기간 지났을 경우
             throw new IllegalArgumentException("다시 로그인해주세요.");
         }

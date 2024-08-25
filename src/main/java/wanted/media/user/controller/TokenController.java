@@ -12,15 +12,15 @@ import wanted.media.user.dto.TokenResponseDto;
 import wanted.media.user.service.TokenService;
 
 @RestController
-@RequestMapping("/api/token")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class TokenController {
 
     private final TokenService tokenService;
 
-    @PostMapping("/reissue")
-    public ResponseEntity<TokenResponseDto> reIssueToken(@RequestBody TokenRequestDto requestDto) {
-        TokenResponseDto responseDto = tokenService.reIssueToken(requestDto);
+    @PostMapping("/token")
+    public ResponseEntity<TokenResponseDto> getToken(@RequestBody TokenRequestDto requestDto) {
+        TokenResponseDto responseDto = tokenService.getToken(requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 }
