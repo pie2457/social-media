@@ -27,41 +27,41 @@ import wanted.media.user.domain.User;
 
 @Entity
 @Getter
-@Table(name = "post")
+@Table(name = "posts")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
 public class Post {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "post_id", nullable = false)
-	private String id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "post_id", nullable = false)
+    private String id;
 
-	@Enumerated(EnumType.STRING)
-	@Column(nullable = false)
-	private Type type;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Type type;
 
-	@Size(max = 150)
-	@Column(nullable = false)
-	private String title;
-	private String content;
-	private String hashtags;
+    @Size(max = 150)
+    @Column(nullable = false)
+    private String title;
+    private String content;
+    private String hashtags;
 
-	@ColumnDefault("0")
-	private Long likeCount;
+    @ColumnDefault("0")
+    private Long likeCount;
 
-	@ColumnDefault("0")
-	private Long viewCount;
+    @ColumnDefault("0")
+    private Long viewCount;
 
-	@ColumnDefault("0")
-	private Long shareCount;
+    @ColumnDefault("0")
+    private Long shareCount;
 
-	@CreatedDate
-	private LocalDateTime createdAt;
+    @CreatedDate
+    private LocalDateTime createdAt;
 
-	@LastModifiedDate
-	private LocalDateTime updatedAt;
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id", nullable = false)
-	private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }
