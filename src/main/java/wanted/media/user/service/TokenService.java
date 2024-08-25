@@ -30,7 +30,7 @@ public class TokenService {
 
         User user = findUserByToken(requestDto);
 
-        Token storedToken = tokenRepository.findByUserId(user.getUserId())
+        Token storedToken = tokenRepository.findByUser_UserId(user.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 토큰입니다."));
 
         if (!storedToken.getRefreshToken().equals(requestDto.refreshToken())) {

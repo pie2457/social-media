@@ -27,7 +27,7 @@ public class UserService {
         if (!requestDto.getPassword().equals(user.getPassword())) // password 암호화 저장시 변경하기
             throw new IllegalArgumentException("account나 password를 다시 확인해주세요.");
 
-        Optional<Token> refreshToken = tokenRepository.findByUserId(user.getUserId()); // 리프레시 토큰 있는지 확인
+        Optional<Token> refreshToken = tokenRepository.findByUser_UserId(user.getUserId()); // 리프레시 토큰 있는지 확인
         String newRefreshToken = tokenProvider.makeToken(requestDto.getAccount(), "refresh"); // 새 리프레시 토큰
         if (refreshToken.isPresent()) { // 리프레시 토큰 있을 경우
             refreshToken.get().updateToken(newRefreshToken); // 새 토큰으로 업데이트
