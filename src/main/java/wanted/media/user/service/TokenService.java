@@ -3,6 +3,7 @@ package wanted.media.user.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import wanted.media.exception.NotFoundException;
 import wanted.media.user.config.TokenProvider;
 import wanted.media.user.domain.Token;
@@ -21,6 +22,7 @@ public class TokenService {
     private final UserRepository userRepository;
 
     // 액세스 토큰, 리프레시 토큰 재발행
+    @Transactional
     public TokenResponseDto getToken(TokenRequestDto requestDto) {
         if (!tokenProvider.validToken(requestDto.refreshToken())) { // 리프레시 토큰 만료 기간 지났을 경우
             throw new IllegalArgumentException("다시 로그인해주세요.");
@@ -44,6 +46,7 @@ public class TokenService {
         return new TokenResponseDto(accessToken, refreshToken);
     }
 
+    @Transactional(readOnly = true)
     public User findUserByToken(TokenRequestDto requestDto) {
         Authentication authentication = tokenProvider.getAuthentication(requestDto.accessToken());
         UserDetail userDetail = (UserDetail) authentication.getPrincipal();

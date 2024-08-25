@@ -2,6 +2,7 @@ package wanted.media.user.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import wanted.media.user.config.TokenProvider;
 import wanted.media.user.domain.Token;
 import wanted.media.user.domain.User;
@@ -19,6 +20,7 @@ public class UserService {
     private final TokenRepository tokenRepository;
     private final TokenProvider tokenProvider;
 
+    @Transactional
     public UserLoginResponseDto login(UserLoginRequestDto requestDto) {
         User user = userRepository.findByAccount(requestDto.getAccount())
                 .orElseThrow(() -> new IllegalArgumentException("account나 password를 다시 확인해주세요."));
