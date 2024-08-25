@@ -13,8 +13,6 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -32,7 +30,6 @@ import wanted.media.user.domain.User;
 @EntityListeners(AuditingEntityListener.class)
 public class Post {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id", nullable = false)
     private String id;
 
