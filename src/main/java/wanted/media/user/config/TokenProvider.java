@@ -21,9 +21,10 @@ public class TokenProvider {
 
     @Value("${jwt.secret_key}")
     private String key;
-
-    private long tokenValidTime = 1000L * 60 * 60; // 1시간
-    private long RefreshTokenValidTime = 1000L * 60 * 60 * 24 * 7; // 7일
+    @Value("${jwt.access_token_expiration}")
+    private long tokenValidTime;
+    @Value("${jwt.refresh_token_expiration}")
+    private long RefreshTokenValidTime;
 
     private final UserDetailService userDetailService;
 
