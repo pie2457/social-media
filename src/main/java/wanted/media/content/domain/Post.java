@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -13,18 +14,19 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Table(name = "contents")
+@Table(name = "posts")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
 @EntityListeners(AuditingEntityListener.class)
-public class Content {
+public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "content_id", nullable = false)
+    @Column(name = "post_id", nullable = false)
     private Long id;
 
     @Column(name = "like_count")
+    @ColumnDefault("0")
     private Long likeCount;
 
     @Enumerated(EnumType.STRING)
@@ -39,8 +41,10 @@ public class Content {
 
     private String hashtags;
 
+    @ColumnDefault("0")
     private Long viewCount;
 
+    @ColumnDefault("0")
     private Long shareCount;
 
     @LastModifiedDate
@@ -50,7 +54,7 @@ public class Content {
     private LocalDateTime createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     @NotNull
     private User user;
 
