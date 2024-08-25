@@ -24,13 +24,8 @@ public class PostService {
             return type == null ?
                     postRepository.findAll() : postRepository.findByType(type);
             //throw new IllegalStateException("해당하는 태그를 찾을 수 없습니다.");
-        } else {
-            return type == null ?
-                    postRepository.findBySearchContaining(account) :
-                    postRepository.findBySearchContaining(account, type);
         }
-
-        return postRepository.findBySearchContaining(account);
+        return postRepository.findBySearchContaining(account, type);
     }
 
 }
