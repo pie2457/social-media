@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import wanted.media.content.domain.Post;
+import wanted.media.content.domain.Type;
 import wanted.media.content.dto.PostDto;
 import wanted.media.content.service.PostService;
 
@@ -22,8 +23,9 @@ public class PostController {
     private PostService postService;
 
     @GetMapping
-    public List<PostDto> list(@RequestParam(value = "hashtag", required = true) String account) {
-        List<Post> posts = postService.findPosts(account);
+    public List<PostDto> list(@RequestParam(value = "hashtag", required = true) String account,
+                              @RequestParam(value = "type", required = false) Type type) {
+        List<Post> posts = postService.findPosts(account, type);
         log.info("Content List : " + posts);
         return posts.stream()
                 .map(PostDto::allPosts)
