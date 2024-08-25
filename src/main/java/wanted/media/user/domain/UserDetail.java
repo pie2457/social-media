@@ -8,7 +8,6 @@ import java.util.Collection;
 import java.util.List;
 
 public class UserDetail implements UserDetails {
-
     private String account;
     private String password;
     private List<GrantedAuthority> authorities;

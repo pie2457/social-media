@@ -16,7 +16,6 @@ import wanted.media.user.repository.UserRepository;
 @Service
 @RequiredArgsConstructor
 public class TokenService {
-
     private final TokenProvider tokenProvider;
     private final TokenRepository tokenRepository;
     private final UserRepository userRepository;
