@@ -19,7 +19,7 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<UserLoginResponseDto> loginUser(@RequestBody UserLoginRequestDto requestDto) {
-        UserLoginResponseDto responseDto = userService.loginUser(requestDto);
+        UserLoginResponseDto responseDto = userService.login(requestDto);
         return ResponseEntity.ok().body(responseDto);
     }
 }

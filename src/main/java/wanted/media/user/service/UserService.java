@@ -19,7 +19,7 @@ public class UserService {
     private final TokenRepository tokenRepository;
     private final TokenProvider tokenProvider;
 
-    public UserLoginResponseDto loginUser(UserLoginRequestDto requestDto) {
+    public UserLoginResponseDto login(UserLoginRequestDto requestDto) {
         User user = userRepository.findByAccount(requestDto.getAccount())
                 .orElseThrow(() -> new IllegalArgumentException("account나 password를 다시 확인해주세요."));
         if (!requestDto.getPassword().equals(user.getPassword())) // password 암호화 저장시 변경하기
