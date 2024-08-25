@@ -20,14 +20,15 @@ public class PostService {
     private PostRepository postRepository;
 
     @Transactional(readOnly = true)
-    public List<Post> findPosts(String account, Type type, String orderBy, String sortDirection) {
-        Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), orderBy)
-        if (account == null || account.isEmpty()) {
-            return type == null ?
-                    postRepository.findAll() : postRepository.findByType(type);
-            //throw new IllegalStateException("해당하는 태그를 찾을 수 없습니다.");
-        }
-        return postRepository.findBySearchContaining(account, type);
+    public List<Post> findPosts(String account, Type type, String orderBy, String sortDirection, String searchBy, String search) {
+        Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), orderBy);
+
+//        if (search == null || search.isEmpty()) {
+//            return postRepository.findAll();
+//            //throw new IllegalStateException("해당하는 태그를 찾을 수 없습니다.");
+//        }
+
+        return postRepository.findBySearchContaining(account, type, searchBy, search, sort);
     }
 
 }
