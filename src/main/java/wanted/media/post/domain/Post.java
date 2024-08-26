@@ -1,6 +1,7 @@
 package wanted.media.post.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -32,6 +33,7 @@ public class Post {
     private String title;
 
     private String content;
+
     private String hashtags;
 
     @ColumnDefault("0")
@@ -58,5 +60,9 @@ public class Post {
             this.viewCount = 0L;
         }
         this.viewCount += 1;
+    }
+  
+    public void addLikeCount() {
+        this.likeCount++;
     }
 }
