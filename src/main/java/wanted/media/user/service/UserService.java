@@ -1,29 +1,51 @@
 package wanted.media.user.service;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import wanted.media.user.config.TokenProvider;
 import wanted.media.user.domain.Code;
 import wanted.media.user.domain.Grade;
+import wanted.media.user.domain.Token;
 import wanted.media.user.domain.User;
-import wanted.media.user.dto.SignUpRequest;
-import wanted.media.user.dto.SignUpResponse;
-import wanted.media.user.dto.UserCreateDto;
+import wanted.media.user.dto.*;
 import wanted.media.user.repository.CodeRepository;
+import wanted.media.user.repository.TokenRepository;
 import wanted.media.user.repository.UserRepository;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class UserService {
     private final UserRepository userRepository;
-    private final CodeRepository codeRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final TokenRepository tokenRepository;
+    private final TokenProvider tokenProvider;
+    private final CodeRepository codeRepository;
     private final UserValidator userValidator;
     private final GenerateCode generateCode;
+
+    @Transactional
+    public UserLoginResponseDto login(UserLoginRequestDto requestDto) {
+        User user = userRepository.findByAccount(requestDto.getAccount())
+                .orElseThrow(() -> new IllegalArgumentException("account나 password를 다시 확인해주세요."));
+        if (!passwordEncoder.matches(requestDto.getPassword(), user.getPassword()))
+            throw new IllegalArgumentException("account나 password를 다시 확인해주세요.");
+
+        Optional<Token> refreshToken = tokenRepository.findByUser_UserId(user.getUserId()); // 리프레시 토큰 있는지 확인
+        String newRefreshToken = tokenProvider.makeToken(requestDto.getAccount(), "refresh"); // 새 리프레시 토큰
+        if (refreshToken.isPresent()) { // 리프레시 토큰 있을 경우
+            refreshToken.get().updateToken(newRefreshToken); // 새 토큰으로 업데이트
+        } else { // 리프레시 토큰 없을 경우
+            tokenRepository.save(new Token(newRefreshToken, user)); // 새 토큰 저장
+        }
+
+        return new UserLoginResponseDto(user.getUserId(), tokenProvider.makeToken(requestDto.getAccount(), "access"));
+    }
 
     //회원가입
     public SignUpResponse signUp(SignUpRequest request) {
