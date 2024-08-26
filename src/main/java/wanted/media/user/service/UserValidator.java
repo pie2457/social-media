@@ -1,31 +1,29 @@
 package wanted.media.user.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import wanted.media.user.dto.SignUpRequest;
 import wanted.media.user.repository.UserRepository;
 
 @Component
+@RequiredArgsConstructor
 public class UserValidator {
     private final UserRepository userRepository;
-
-    public UserValidator(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
+    
     /*
      * 회원가입 시 사용자 정보 중복 확인
      * */
     public void validateRequest(SignUpRequest signUpRequest) {
         //account 중복 확인
-        if (userRepository.findByAccount(signUpRequest.getAccount()).isPresent()) {
+        if (userRepository.findByAccount(signUpRequest.account()).isPresent()) {
             throw new IllegalArgumentException("이미 존재하는 계정입니다.");
         }
         //email 중복 확인
-        if (userRepository.findByEmail(signUpRequest.getEmail()).isPresent()) {
+        if (userRepository.findByEmail(signUpRequest.email()).isPresent()) {
             throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
         }
         //비밀번호 유효성 검사
-        validatePassword(signUpRequest.getPassword(), signUpRequest.getAccount(), signUpRequest.getEmail());
+        validatePassword(signUpRequest.password(), signUpRequest.account(), signUpRequest.email());
     }
 
     //비밀번호 유효성 검사
@@ -42,9 +40,13 @@ public class UserValidator {
         if (!password.matches(".*[a-zA-Z].*") || !password.matches(".*[0-9!@#$%^&*].*")) {
             throw new IllegalArgumentException("비밀번호는 최소 숫자, 문자, 특수문자 중 최소 2가지를 포함해야 합니다.");
         }
-        // 4. 통상적으로 자주 사용되는 비밀번호인 경우
-        if (containsCommonPasswords(password)) {
-            throw new IllegalArgumentException("통상적으로 자주 사용되는 비밀번호는 사용할 수 없습니다.");
+        // 4. 비밀번호가 통상적으로 자주 사용되는 경우
+        String[] commonPasswords = {"123456", "password", "123456789", "qwerty", "abc123"};
+        String lowerCasePassword = password.toLowerCase();  // 비밀번호를 소문자로 변환 후 비교
+        for (String commonPassword : commonPasswords) {
+            if (lowerCasePassword.equals(commonPassword)) {
+                throw new IllegalArgumentException("통상적으로 자주 사용되는 비밀번호는 사용할 수 없습니다.");
+            }
         }
         // 5. 연속된 문자열을 사용한 경우
         if (hasSequentialCharacters(password)) {
@@ -56,23 +58,11 @@ public class UserValidator {
         }
     }
 
-    // 통상적으로 자주 사용되는 비밀번호 검사
-    private boolean containsCommonPasswords(String password) {
-        String[] commonPasswords = {"123456", "password", "123456789", "qwerty", "abc123"};
-        for (String commonPassword : commonPasswords) {
-            if (password.equalsIgnoreCase(commonPassword)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     // 3회 이상 연속된 문자열을 사용한 비밀번호 검사
     private boolean hasSequentialCharacters(String password) {
         if (password == null || password.length() < 3) {
             return false;
         }
-
         int seqCount = 1;
         for (int i = 1; i < password.length(); i++) {
             // 현재 문자와 이전 문자의 차이를 비교
@@ -87,7 +77,6 @@ public class UserValidator {
         }
         return false;
     }
-
 
     // 사용자 개인정보를 포함한 경우 비밀번호 검사
     private boolean isSimilarToPersonalInfo(String password, String account, String email) {
