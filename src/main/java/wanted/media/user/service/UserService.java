@@ -24,7 +24,6 @@ public class UserService {
     private final UserValidator userValidator;
     private final GenerateCode generateCode;
 
-
     //회원가입
     public SignUpResponse signUp(SignUpRequest request) {
         // 1. 사용자 입력내용 검증
