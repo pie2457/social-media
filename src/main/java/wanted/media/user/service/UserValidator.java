@@ -40,19 +40,11 @@ public class UserValidator {
         if (!password.matches(".*[a-zA-Z].*") || !password.matches(".*[0-9!@#$%^&*].*")) {
             throw new IllegalArgumentException("비밀번호는 최소 숫자, 문자, 특수문자 중 최소 2가지를 포함해야 합니다.");
         }
-        // 4. 비밀번호가 통상적으로 자주 사용되는 경우
-        String[] commonPasswords = {"123456", "password", "123456789", "qwerty", "abc123"};
-        String lowerCasePassword = password.toLowerCase();  // 비밀번호를 소문자로 변환 후 비교
-        for (String commonPassword : commonPasswords) {
-            if (lowerCasePassword.equals(commonPassword)) {
-                throw new IllegalArgumentException("통상적으로 자주 사용되는 비밀번호는 사용할 수 없습니다.");
-            }
-        }
-        // 5. 연속된 문자열을 사용한 경우
+        // 4. 연속된 문자열을 사용한 경우
         if (hasSequentialCharacters(password)) {
             throw new IllegalArgumentException("3회 이상 연속되는 문자 사용은 불가능합니다.");
         }
-        // 6. 사용자 개인정보를 포함한 경우
+        // 5. 사용자 개인정보를 포함한 경우
         if (isSimilarToPersonalInfo(password, account, email)) {
             throw new IllegalArgumentException("사용자 개인정보가 포함된 비밀번호입니다.");
         }
