@@ -1,9 +1,9 @@
 package wanted.media.post.service;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wanted.media.exception.CustomException;
 import wanted.media.exception.ErrorCode;
 import wanted.media.post.domain.Post;
 import wanted.media.post.repository.PostRepository;
@@ -15,8 +15,12 @@ public class PostService {
 
     @Transactional
     public String increaseLike(String postId) {
+        if (postId == null) {
+            new CustomException(ErrorCode.INVALID_INPUT_VALUE);
+        }
+
         // contentId를 통해 게시물의 SNS 유형 조회
-        Post post = postRepository.findById(postId).orElseThrow(() -> new EntityNotFoundException(ErrorCode.ENTITY_NOT_FOUND.getMessage()));
+        Post post = postRepository.findById(postId).orElseThrow(() -> new CustomException(ErrorCode.ENTITY_NOT_FOUND));
 
         String snsType = post.getType().name();
         // 외부 SNS API 호출 부분 (기능 개발을 위한 요소로, 실제 동작하지 않음)
