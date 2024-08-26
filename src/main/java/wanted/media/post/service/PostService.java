@@ -14,7 +14,7 @@ import wanted.media.post.repository.PostRepository;
 @Service
 @RequiredArgsConstructor
 public class PostService {
-    private PostRepository postRepository;
+    private final PostRepository postRepository;
 
     @Transactional(readOnly = true)
     public Page<Post> findPosts(String account, Type type, String orderBy, String sortDirection, String searchBy, String search, int page, int pageCount) {
