@@ -2,23 +2,16 @@ package wanted.media.user.service;
 
 import org.springframework.stereotype.Component;
 
-import java.util.Random;
+import java.util.UUID;
 
 @Component
 public class GenerateCode {
     private int codeLength = 6; //6자리 코드
-    private final char[] characterTable = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
-            'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-            '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'};
 
     public String codeGenerate() {
-        Random random = new Random(System.currentTimeMillis());
-        int tableLength = characterTable.length;
-        StringBuilder code = new StringBuilder();
-
-        for (int i = 0; i < codeLength; i++) {
-            code.append(characterTable[random.nextInt(tableLength)]);
-        }
-        return code.toString();
+        // 1. UUID 생성 후, "-" 제거, 대문자 변환
+        String uuid = UUID.randomUUID().toString().replace("-", "").toUpperCase();
+        // 2. UUID에서 필요한 길이만큼 자르기
+        return uuid.substring(0, codeLength);
     }
 }
