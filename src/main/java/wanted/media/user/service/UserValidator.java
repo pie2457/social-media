@@ -9,7 +9,7 @@ import wanted.media.user.repository.UserRepository;
 @RequiredArgsConstructor
 public class UserValidator {
     private final UserRepository userRepository;
-    
+
     /*
      * 회원가입 시 사용자 정보 중복 확인
      * */
