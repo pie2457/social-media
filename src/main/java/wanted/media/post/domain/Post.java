@@ -53,7 +53,7 @@ public class Post {
     @NotNull
     private User user;
 
-    public void addLikeCount(Long count) {
-        this.likeCount = count + 1;
+    public void addLikeCount() {
+        this.likeCount++;
     }
 }

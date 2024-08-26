@@ -23,8 +23,7 @@ public class PostService {
         snsApi(snsType, postId);
 
         // 좋아요 수 증가
-        Long like = post.getLikeCount();
-        post.addLikeCount(like);
+        post.addLikeCount();
         return postId;
     }
 
