@@ -18,6 +18,7 @@ import wanted.media.user.service.UserService;
 public class UserController {
     private final UserService userService;
 
+    //회원가입
     @PostMapping("/sign-up")
     public ResponseEntity<SignUpResponse> signUp(@Validated @RequestBody SignUpRequest request) {
         SignUpResponse response = userService.signUp(request);

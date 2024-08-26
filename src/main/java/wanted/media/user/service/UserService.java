@@ -1,5 +1,6 @@
 package wanted.media.user.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,8 +17,8 @@ import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserService {
-
     private final UserRepository userRepository;
     private final CodeRepository codeRepository;
     private final BCryptPasswordEncoder passwordEncoder;
@@ -29,13 +30,13 @@ public class UserService {
         // 1. 사용자 입력내용 검증
         userValidator.validateRequest(request);
         // 2. 비밀번호 암호화
-        String encodedPassword = passwordEncoder.encode(request.getPassword());
+        String encodedPassword = passwordEncoder.encode(request.password());
         // 3. 인증코드 생성
         String verificationCode = generateCode.codeGenerate();
         // 4. User 객체 생성
         User user = User.builder()
-                .account(request.getAccount())
-                .email(request.getEmail())
+                .account(request.account())
+                .email(request.email())
                 .password(encodedPassword)
                 .grade(Grade.NORMAL_USER)
                 .build();
@@ -51,10 +52,7 @@ public class UserService {
         codeRepository.save(code);
         // 8. UserCreateDto 생성
         UserCreateDto userCreateDto = new UserCreateDto(user.getAccount(), user.getEmail());
-        // 9. SignUpResponse 생성
-        SignUpResponse signUpResponse = new SignUpResponse("회원가입이 성공적으로 완료됐습니다.", userCreateDto, verificationCode);
-
-        return signUpResponse;
+        // 9. SignUpResponse 생성 및 반환
+        return new SignUpResponse("회원가입이 완료되었습니다.", userCreateDto, verificationCode);
     }
-
 }
