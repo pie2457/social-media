@@ -4,9 +4,9 @@ import org.apache.coyote.BadRequestException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import wanted.media.exception.CustomException;
 import wanted.media.exception.ErrorCode;
 import wanted.media.exception.ErrorResponse;
+import wanted.media.exception.PostListCustomException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -16,9 +16,9 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest()
                 .body(new ErrorResponse(400, e.getMessage()));
     }
-
-    @ExceptionHandler(CustomException.class)
-    public ResponseEntity<ErrorResponse> handleCustomException(CustomException ex) {
+    
+    @ExceptionHandler(PostListCustomException.class)
+    public ResponseEntity<ErrorResponse> handleCustomException(PostListCustomException ex) {
         ErrorCode errorCode = ex.getErrorCode();
         ErrorResponse response = new ErrorResponse(errorCode);
         return new ResponseEntity<>(response, errorCode.getStatus());

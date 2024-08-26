@@ -1,67 +1,94 @@
 package wanted.media.post.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
-import wanted.media.post.dto.PostDto;
+import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-@TestPropertySource(locations = "classpath:application-test.properties")
+@RequiredArgsConstructor
+@TestPropertySource(locations = "classpath:application-test.yml")
 class PostControllerTest {
-    @Autowired
-    private TestRestTemplate restTemplate;
+    private MockMvc mockMvc;
 
     @Test
-    public void posts_list_성공() {
-        // When
-        String url = "/api/posts?hashtag=wanted&type=FACEBOOK&orderBy=createdAt&sortDirection=ASC&search_by=title&search=판교&page=0&page_count=10";
-        ResponseEntity<List> responseEntity = restTemplate.getForEntity(url, List.class);
-
-        // Then
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-        List<PostDto> posts = responseEntity.getBody();
-        assertThat(posts).isNotEmpty();
+    void posts_list_성공() throws Exception {
+        mockMvc.perform(get("/api/posts")
+                        .param("hashtag", "wanted")
+                        .param("type", "FACEBOOK")
+                        .param("orderBy", "createdAt")
+                        .param("sortDirection", "ASC")
+                        .param("search_by", "title")
+                        .param("search", "판교")
+                        .param("page", "0")
+                        .param("page_count", "10")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isNotEmpty()); // 응답이 비어있지 않음을 확인
     }
 
     @Test
-    public void search_by_성공() {
-        String url = "/api/posts?hashtag=wanted&type=FACEBOOK&orderBy=createdAt&sortDirection=ASC&search_by=invalidSearchBy&page=0&page_count=10";
-        ResponseEntity<List> responseEntity = restTemplate.getForEntity(url, List.class);
-
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    void search_by_성공() throws Exception {
+        mockMvc.perform(get("/api/posts")
+                        .param("hashtag", "wanted")
+                        .param("type", "FACEBOOK")
+                        .param("orderBy", "createdAt")
+                        .param("sortDirection", "ASC")
+                        .param("search_by", "invalidSearchBy")
+                        .param("page", "0")
+                        .param("page_count", "10")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()); // 잘못된 검색 조건에 대한 에러 확인
     }
 
     @Test
-    public void 유효하지_않은_page값() {
-        String url = "/api/posts?hashtag=wanted&type=FACEBOOK&orderBy=createdAt&sortDirection=ASC&search_by=title&search=판교&page=-1&page_count=10";
-        ResponseEntity<List> responseEntity = restTemplate.getForEntity(url, List.class);
-
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    void 유효하지_않은_page값() throws Exception {
+        mockMvc.perform(get("/api/posts")
+                        .param("hashtag", "wanted")
+                        .param("type", "FACEBOOK")
+                        .param("orderBy", "createdAt")
+                        .param("sortDirection", "ASC")
+                        .param("search_by", "title")
+                        .param("search", "판교")
+                        .param("page", "-1") // 유효하지 않은 페이지 번호
+                        .param("page_count", "10")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()); // 페이지 값이 유효하지 않음을 확인
     }
 
     @Test
-    public void 유효하지_않은_page_count_값() {
-        String url = "/api/posts?hashtag=wanted&type=FACEBOOK&orderBy=createdAt&sortDirection=ASC&search_by=title&search=판교&page=0&page_count=-10";
-        ResponseEntity<List> responseEntity = restTemplate.getForEntity(url, List.class);
-
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    void 유효하지_않은_page_count_값() throws Exception {
+        mockMvc.perform(get("/api/posts")
+                        .param("hashtag", "wanted")
+                        .param("type", "FACEBOOK")
+                        .param("orderBy", "createdAt")
+                        .param("sortDirection", "ASC")
+                        .param("search_by", "title")
+                        .param("search", "판교")
+                        .param("page", "0")
+                        .param("page_count", "-10") // 유효하지 않은 페이지 수
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()); // 페이지 수가 유효하지 않음을 확인
     }
-
+    
     @Test
-    public void search_키워드가_없을_때() {
-        String url = "/api/posts?hashtag=wanted&type=FACEBOOK&orderBy=createdAt&sortDirection=ASC&search_by=title&page=0&page_count=10";
-        ResponseEntity<List> responseEntity = restTemplate.getForEntity(url, List.class);
-        
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-        List<PostDto> posts = responseEntity.getBody();
-        assertThat(posts).isNotEmpty();
+    void search_키워드가_없을_때() throws Exception {
+        mockMvc.perform(get("/api/posts")
+                        .param("hashtag", "wanted")
+                        .param("type", "FACEBOOK")
+                        .param("orderBy", "createdAt")
+                        .param("sortDirection", "ASC")
+                        .param("search_by", "title")
+                        .param("page", "0")
+                        .param("page_count", "10")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isNotEmpty()); // 응답이 비어있지 않음을 확인
     }
 }
