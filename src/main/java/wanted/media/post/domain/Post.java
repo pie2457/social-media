@@ -1,4 +1,4 @@
-package wanted.media.content.domain;
+package wanted.media.post.domain;
 
 import java.time.LocalDateTime;
 
