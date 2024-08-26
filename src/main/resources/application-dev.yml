@@ -1,4 +1,8 @@
 spring:
+  datasource:
+    url: ${db.dev.datasource.url}
+    username: ${db.dev.datasource.username}
+    password: ${db.dev.datasource.password}
   jpa:
     show-sql: true
     properties:
