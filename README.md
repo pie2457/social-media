@@ -2,7 +2,7 @@
 
 # Social-Network-Service
 
-### ✨ Backend TeckStack ✨
+### ✨ Backend TechStack ✨
 ![Java](https://img.shields.io/badge/-Java-FF7800?style=flat&logo=Java&logoColor=white)
 ![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-flat&logo=spring&logoColor=white)
 ![SpringBoot](https://img.shields.io/badge/-SpringBoot-6DB33F?style=flat&logo=SpringBoot&logoColor=white)
