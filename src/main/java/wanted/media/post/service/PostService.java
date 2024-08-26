@@ -7,6 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wanted.media.exception.CustomException;
+import wanted.media.exception.ErrorCode;
 import wanted.media.post.domain.Post;
 import wanted.media.post.domain.Type;
 import wanted.media.post.repository.PostRepository;
@@ -25,11 +27,12 @@ public class PostService {
         Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), orderBy);
         Pageable pageable = PageRequest.of(page, pageCount, sort);
 
-//        if (search == null || search.isEmpty()) {
-//            return postRepository.findAll();
-//            //throw new IllegalStateException("해당하는 태그를 찾을 수 없습니다.");
-//        }
+        // 예시: 검색 조건에 맞는 게시물이 없는 경우 예외 처리
+        Page<Post> posts = postRepository.findBySearchContaining(account, type, searchBy, search, pageable);
+        if (posts.isEmpty()) {
+            throw new CustomException(ErrorCode.ENTITY_NOT_FOUND);
+        }
 
-        return postRepository.findBySearchContaining(account, type, searchBy, search, pageable);
+        return posts;
     }
 }
