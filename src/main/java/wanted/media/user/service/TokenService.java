@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wanted.media.exception.ErrorCode;
 import wanted.media.exception.NotFoundException;
 import wanted.media.user.config.TokenProvider;
 import wanted.media.user.domain.Token;
@@ -52,7 +53,7 @@ public class TokenService {
         UserDetail userDetail = (UserDetail) authentication.getPrincipal();
         String account = userDetail.getUsername();
         return userRepository.findByAccount(account)
-                .orElseThrow(() -> new NotFoundException("회원을 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException(ErrorCode.ENTITY_NOT_FOUND));
     }
 
 }

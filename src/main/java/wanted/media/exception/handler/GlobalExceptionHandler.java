@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import wanted.media.exception.ErrorCode;
 import wanted.media.exception.ErrorResponse;
 import wanted.media.exception.NotFoundException;
 
@@ -18,7 +19,12 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<String> handleNotFoundException(NotFoundException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    public ResponseEntity<ErrorResponse> handlePostNotFound(NotFoundException e) {
+        ErrorCode errorCode = e.getErrorCode();
+        ErrorResponse errorResponse = new ErrorResponse(
+                errorCode.getStatus().value(),
+                errorCode.getMessage()
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 }
