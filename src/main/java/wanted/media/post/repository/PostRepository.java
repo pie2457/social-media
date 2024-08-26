@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import wanted.media.post.domain.Post;
 import wanted.media.post.domain.Type;
 
-public interface PostRepository extends JpaRepository<Post, Long> {
+public interface PostRepository extends JpaRepository<Post, String> {
     @Query("SELECT p FROM Post p " +
             "WHERE p.user.account = :account " +
             "AND (:type IS NULL OR p.type = :type) " +

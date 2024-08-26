@@ -1,32 +1,23 @@
 package wanted.media.post.domain;
 
-import java.time.LocalDateTime;
-
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import jakarta.validation.constraints.Size;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 import wanted.media.user.domain.User;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Table(name = "posts")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 @EntityListeners(AuditingEntityListener.class)
 public class Post {
     @Id
@@ -40,7 +31,9 @@ public class Post {
     @Size(max = 150)
     @Column(nullable = false)
     private String title;
+
     private String content;
+
     private String hashtags;
 
     @ColumnDefault("0")
@@ -52,13 +45,24 @@ public class Post {
     @ColumnDefault("0")
     private Long shareCount;
 
-    @CreatedDate
-    private LocalDateTime createdAt;
-
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    @CreatedDate
+    private LocalDateTime createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    public void incrementViewCount() {
+        if (this.viewCount == null) {
+            this.viewCount = 0L;
+        }
+        this.viewCount += 1;
+    }
+  
+    public void addLikeCount() {
+        this.likeCount++;
+    }
 }
