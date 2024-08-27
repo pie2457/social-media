@@ -26,9 +26,146 @@
 - [🌿 Git Branch 전략](#-git-branch-전략)
 
 ## 디렉토리 구조
+<details>
+<summary><strong>구조도</strong></summary>
+<div markdown="1">
+  
+```
+src
+├───main
+│   ├───generated
+│   │   └───wanted
+│   │       └───media
+│   │           ├───post
+│   │           │   └───domain
+│   │           │           QPost.java
+│   │           │           
+│   │           └───user
+│   │               └───domain
+│   │                       QCode.java
+│   │                       QToken.java
+│   │                       QUser.java
+│   │                       
+│   ├───java
+│   │   └───wanted
+│   │       └───media
+│   │           │   MediaApplication.java
+│   │           │   
+│   │           ├───exception
+│   │           │   │   BadRequestException.java
+│   │           │   │   BaseException.java
+│   │           │   │   CustomException.java
+│   │           │   │   ErrorCode.java
+│   │           │   │   ErrorResponse.java
+│   │           │   │   InvalidPasswordException.java
+│   │           │   │   NotFoundException.java
+│   │           │   │   PostListCustomException.java
+│   │           │   │   UserNotFoundException.java
+│   │           │   │   VerificationCodeExpiredException.java
+│   │           │   │   VerificationCodeMismatchException.java
+│   │           │   │   
+│   │           │   └───handler
+│   │           │           CustomException.java
+│   │           │           GlobalExceptionHandler.java
+│   │           │           
+│   │           ├───global
+│   │           │   ├───config
+│   │           │   │       QueryDslConfig.java
+│   │           │   │       WebConfig.java
+│   │           │   │       
+│   │           │   └───converter
+│   │           │           StringToLocalDateTimeConverter.java
+│   │           │           
+│   │           ├───post
+│   │           │   ├───controller
+│   │           │   │       PostController.java
+│   │           │   │       StatController.java
+│   │           │   │       
+│   │           │   ├───domain
+│   │           │   │       CountValueType.java
+│   │           │   │       Post.java
+│   │           │   │       StatDateType.java
+│   │           │   │       Type.java
+│   │           │   │       
+│   │           │   ├───dto
+│   │           │   │       PostDetailResponse.java
+│   │           │   │       PostDto.java
+│   │           │   │       PostIdResponse.java
+│   │           │   │       StatParam.java
+│   │           │   │       StatResponse.java
+│   │           │   │       
+│   │           │   ├───repository
+│   │           │   │       PostRepository.java
+│   │           │   │       StatRepository.java
+│   │           │   │       
+│   │           │   └───service
+│   │           │           PostService.java
+│   │           │           StatService.java
+│   │           │           
+│   │           └───user
+│   │               ├───config
+│   │               │       SecurityConfig.java
+│   │               │       TokenAuthenticationFilter.java
+│   │               │       TokenProvider.java
+│   │               │       
+│   │               ├───controller
+│   │               │       TokenController.java
+│   │               │       UserController.java
+│   │               │       
+│   │               ├───domain
+│   │               │       Code.java
+│   │               │       Grade.java
+│   │               │       Token.java
+│   │               │       User.java
+│   │               │       UserDetail.java
+│   │               │       
+│   │               ├───dto
+│   │               │       ReissueCodeRequest.java
+│   │               │       ReissueCodeResponse.java
+│   │               │       SignUpRequest.java
+│   │               │       SignUpResponse.java
+│   │               │       TokenRequestDto.java
+│   │               │       TokenResponseDto.java
+│   │               │       UserCreateDto.java
+│   │               │       UserInfoDto.java
+│   │               │       UserLoginRequestDto.java
+│   │               │       UserLoginResponseDto.java
+│   │               │       VerifyRequest.java
+│   │               │       VerifyResponse.java
+│   │               │       
+│   │               ├───repository
+│   │               │       CodeRepository.java
+│   │               │       TokenRepository.java
+│   │               │       UserRepository.java
+│   │               │       
+│   │               └───service
+│   │                       GenerateCode.java
+│   │                       TokenService.java
+│   │                       UserDetailService.java
+│   │                       UserService.java
+│   │                       UserValidator.java
+│   │                       
+│   └───resources
+│           application-dev.yml
+│           application-secret.yml
+│           application-test.yml
+│           application.yml
+│           
+└───test
+    └───java
+        └───wanted
+            └───media
+                │   MediaApplicationTests.java
+                │   
+                └───post
+                    └───service
+                            PostServiceTest.java
+```
+
+</details>
 
 ## ERD
-<img src="https://github.com/user-attachments/assets/10551fb6-14a2-4e52-a797-f0c7e5d7c2d2" width="70%" height="100%">
+<img src="https://github.com/user-attachments/assets/10551fb6-14a2-4e52-a797-f0c7e5d7c2d2" width="90%" height="100%">
 </br>
 
 ## API 명세서
