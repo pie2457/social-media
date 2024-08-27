@@ -19,15 +19,16 @@
 </br>
 
 ## [목차]
-- [📦 ERD 다이어그램](#%EF%B8%8F-erd-다이어그램)
-- [💌 API 명세서](#-api-명세서)
-- [📄 기능적 요구사항](#-기능적-요구사항)
+- [📁 디렉토리 구조](#디렉토리-구조)
+- [📦 ERD](#erd)
+- [💌 API 명세서](#api-명세서)
+- [✉ Git Commit Message Convention](#-git-commit-message-convention)
+- [🌿 Git Branch 전략](#-git-branch-전략)
 
 ## 디렉토리 구조
 
 ## ERD
-
-
+<img src="https://github.com/user-attachments/assets/10551fb6-14a2-4e52-a797-f0c7e5d7c2d2" width="70%" height="100%">
 </br>
 
 ## API 명세서
@@ -262,18 +263,100 @@ e. 인증코드, 사용자 정보 DB에 저장
 <summary>게시물 좋아요 & 공유하기</summary>
 <div markdown="1">
 
-- 게시물 좋아요
+<div>
+
+## 게시물 좋아요
+
+### 기능 요구사항
   게시물 목록 또는 상세 에서 게시물 `좋아요` 클릭 시 사용되는 API
   - 좋아요 클릭 시 각 SNS 별 명시된 API 를 호출합니다.
   - 해당 호출이 성공할 시 `response status 200` 해당 게시물의 `like_count`가 1 증가합니다.
   - 횟수 제한이 없습니다. 한 유저가 몇 번의 좋아요를 누르던 좋아요 수는 계속 상승합니다.
   
-- 게시물 공유
+### API 처리 과정
+1. postId를 통해 게시물의 SNS 유형을 조회한다. ex) FACEBOOK, TWITTER, INSTAGRAM, THREADS
+2. SNS 유형별로 엔드 포인트를 만들고, 외부 SNS API 호출을 한다. (기능 개발을 위한 요소로, 실제 동작하지 않음)
+3. 외부 SNS API를 호출한다고 가정하고, **성공하면 좋아요 수를 증가**시키고,  200을 보낸다.
+
+<details>
+  <summary><strong>API 테스트</strong></summary>
+  <div markdown="1">
+
+  ### Request
+  ```java
+HTTP : POST
+URL: /api/posts/likes/:postId
+```
+
+### Response : 성공시
+```java
+{
+    "postId": "게시물아이디",
+    "messgae": "좋아요 수 증가 완료"
+}
+```
+
+### Response : 실패시
+- `500 Internal Server Error`
+
+  - 잘못된 postId를 입력했을 때 
+    ```java
+    {
+        "postId": "게시물아이디",
+        "messgae": {
+            "좋아요 수 증가 실패": "존재하지 않는 엔티티입니다."
+        }
+    }
+    ```
+  </div>
+</details>
+  
+## 게시물 공유
+
+### 기능 요구사항
   게시물 목록 또는 상세 에서 `공유하기` 클릭 시 사용되는 API
   - 좋아요 클릭 시 각 SNS 별 명시된 API 를 호출합니다.
   - 해당 호출이 성공할 시 `response status 200` 해당 게시물의 `share_count`가 1 증가합니다.
   - 횟수 제한이 없습니다. 한 유저가 몇 번의 공유를 누르던 공유 수는 계속 상승합니다.
+
+### API 처리 과정
+1. postId를 통해 게시물의 SNS 유형을 조회한다. ex) FACEBOOK, TWITTER, INSTAGRAM, THREADS
+2. SNS 유형별로 엔드 포인트를 만들고, 외부 SNS API 호출을 한다. (기능 개발을 위한 요소로, 실제 동작하지 않음)
+3. 외부 SNS API를 호출한다고 가정하고, **성공하면 공유 수를 증가**시키고,  200을 보낸다.
+
+<details>
+  <summary><strong>API 테스트</strong></summary>
+  <div markdown="1">
   
+  ### Request
+```java
+HTTP : POST
+URL: /api/posts/share/:postId
+```
+
+### Response : 성공시
+```java
+{
+    "postId": "게시물아이디",
+    "messgae": "공유 수 증가 완료"
+}
+```
+
+### Response : 실패시
+- `500 Internal Server Error`
+
+  - 잘못된 postId를 입력했을 때 
+    ```java
+    {
+        "postId": "게시물아이디",
+        "messgae": {
+            "공유 수 증가 실패": "존재하지 않는 엔티티입니다."
+        }
+    }
+    ```
+  </div>
+</details>
+</div>
 
 </div>
 </details>
@@ -364,9 +447,6 @@ e. 인증코드, 사용자 정보 DB에 저장
 </div>
 </div>
 </details>
-
-</br>
-
 
 ## 🌿 Git Branch 전략
 <details>
