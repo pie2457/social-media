@@ -33,18 +33,7 @@
 ```
 src
 ├───main
-│   ├───generated
-│   │   └───wanted
-│   │       └───media
-│   │           ├───post
-│   │           │   └───domain
-│   │           │           QPost.java
-│   │           │           
-│   │           └───user
-│   │               └───domain
-│   │                       QCode.java
-│   │                       QToken.java
-│   │                       QUser.java
+│   │   
 │   │                       
 │   ├───java
 │   │   └───wanted
