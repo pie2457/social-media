@@ -1,16 +1,26 @@
 package wanted.media.statistics.domain;
 
-import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Entity
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-class StatisticsHashTag {
+public class StatisticsHashTag {
 
-    @EmbeddedId
-    private StatHashTagId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    private String hashtags;
+
+    @CreatedDate
+    private LocalDateTime createdAt;
 }
