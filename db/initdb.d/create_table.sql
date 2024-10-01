@@ -1,20 +1,22 @@
 CREATE TABLE statistics_post
 (
     id              INT(11) AUTO_INCREMENT COMMENT '통계 피드 일련번호',
-    post_id         VARCHAR(32) NOT NULL COMMENT '피드 아이디',
-    view_count      BIGINT      NOT NULL DEFAULT 0 COMMENT '조회수',
-    like_count      BIGINT      NOT NULL DEFAULT 0 COMMENT '좋아요 수',
-    stat_type       VARCHAR(32) NOT NULL COMMENT '통계 타입',
-    post_created_at DATETIME             DEFAULT CURRENT_TIMESTAMP() COMMENT '피드 생성일자',
+    post_id         VARCHAR(32)  NOT NULL COMMENT '피드 아이디',
+    view_count      BIGINT       NOT NULL DEFAULT 0 COMMENT '조회수',
+    like_count      BIGINT       NOT NULL DEFAULT 0 COMMENT '좋아요 수',
+    stat_type       VARCHAR(32)  NOT NULL COMMENT '통계 타입',
+    hashtag         VARCHAR(100) NOT NULL COMMENT '해시태그',
+    post_created_at DATETIME              DEFAULT CURRENT_TIMESTAMP() COMMENT '피드 생성일자',
     PRIMARY KEY (id)
 ) COMMENT '통계용 피드 테이블';
 
 CREATE TABLE statistics_hash_tag
 (
-    stat_post_id INT(11)      NOT NULL COMMENT '통계용 피드 아이디',
-    hash_tag     VARCHAR(100) NOT NULL COMMENT '해시태그',
-    PRIMARY KEY (stat_post_id, hash_tag)
-) COMMENT '통계용 게시글 해시태그';
+    id         INT(11) AUTO_INCREMENT COMMENT '통계 해시태그 일련번호',
+    hashtags   TEXT NOT NULL COMMENT '해시태그 목록',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP() COMMENT '생성일자',
+    PRIMARY KEY (id)
+) COMMENT '통계용 해시태그 테이블';
 
 CREATE TABLE posts
 (

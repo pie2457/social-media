@@ -55,7 +55,7 @@ public class HotLikeFeedStep {
     @Bean(HOT_LIKE_FEED_READER)
     public JpaPagingItemReader<Post> statHotLikeFeedItemReader(EntityManagerFactory entityManagerFactory) {
         var yesterday = LocalDate.now().minusDays(1);
-        
+
         return new JpaPagingItemReaderBuilder<Post>()
                 .name(HOT_LIKE_FEED_READER)
                 .entityManagerFactory(entityManagerFactory)
@@ -78,6 +78,7 @@ public class HotLikeFeedStep {
                 .viewCount(post.getViewCount())
                 .postCreatedAt(post.getCreatedAt())
                 .statType(PostStatType.LIKE_STAT)
+                .hashtag(post.getHashtags())
                 .build();
     }
 

@@ -27,6 +27,8 @@ public class StatisticsPost {
     @Enumerated(EnumType.STRING)
     private PostStatType statType;
 
+    private String hashtag;
+
     private LocalDateTime postCreatedAt;
 }
 

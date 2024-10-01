@@ -78,6 +78,7 @@ public class HotViewFeedStep {
                 .viewCount(post.getViewCount())
                 .postCreatedAt(post.getCreatedAt())
                 .statType(PostStatType.VIEW_STAT)
+                .hashtag(post.getHashtags())
                 .build();
     }
 
